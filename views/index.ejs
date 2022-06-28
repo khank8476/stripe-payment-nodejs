@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha384-S58meLBGKxIiQmJ/pJ8ilvFUcGcqgla+mWH9EEKGm6i6rKxSTA2kpXJQJ8n7XK4w" crossorigin="anonymous"></script>
+        <script src="https://js.stripe.com/v3/"></script>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <button>Checkout</button>
+        <script>
+            const button = document.querySelector("button");
+            button.addEventListener('click', () => {
+                $.ajax({
+                    url: '/create-checkout-session',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({quantity: 1}),
+                    success: function (data, textStatus, xhr){
+                        var stripe = Stripe('pk_test_51H6TvUFCoZeck1x3AArNt6pfICCSrdyzgpGTq1jyD7guXLc40Uc1OENdOneHVqbZb1ZgyIVl9uYiBTgyZeOL0jRp00DtTJ5j1U');
+                        return stripe.redirectToCheckout({sessionId: data.id});
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>
